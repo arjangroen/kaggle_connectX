@@ -1,13 +1,6 @@
 def my_agent(observation, configuration):
     import numpy as np
-    from numpy.lib.stride_tricks import as_strided
-    def conv2d(a, b):
-        #a = np.expand_dims(a,axis=-1)
-        Hout = a.shape[0] - b.shape[0] + 1
-        Wout = a.shape[1] - b.shape[1] + 1
-        a = as_strided(a, (Hout, Wout, b.shape[0], b.shape[1]), a.strides[:2] + a.strides[0:])
-        return np.tensordot(a, b, axes=2)
-    convolve2d = conv2d
+    from scipy.signal import convolve2d
 
     # color
     my_color = observation['mark']
@@ -73,7 +66,7 @@ def my_agent(observation, configuration):
         obs_copy[row, column] = my_color
         return obs_copy
 
-    def find_best_move(obs_matrix, turn=-1, max_depth=3, depth=0):
+    def find_best_move(obs_matrix, turn=-1, max_depth=5, depth=0):
         turn *= -1
         depth += 1
         obs_copy = obs_matrix.copy()
